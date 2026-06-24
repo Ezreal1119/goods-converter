@@ -1,0 +1,264 @@
+:root {
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f3f6fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #e3edff 0, transparent 36%),
+    #f3f6fb;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.page-shell {
+  width: 100%;
+  min-height: 100vh;
+  padding: 48px 24px;
+}
+
+.converter-card {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 36px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(205, 216, 235, 0.9);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(35, 55, 90, 0.12);
+}
+
+.page-header h1 {
+  margin: 4px 0 10px;
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -0.04em;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #3164d8;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.subtitle {
+  max-width: 720px;
+  margin: 0;
+  color: #63708a;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.upload-section {
+  margin-top: 32px;
+}
+
+.upload-box {
+  display: flex;
+  min-height: 180px;
+  padding: 32px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed #9eb6e8;
+  border-radius: 18px;
+  background: #f8faff;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.upload-box:hover {
+  border-color: #3164d8;
+  background: #f1f6ff;
+  transform: translateY(-1px);
+}
+
+.upload-box input {
+  display: none;
+}
+
+.upload-title {
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.upload-description {
+  max-width: 600px;
+  margin-top: 8px;
+  color: #6d7890;
+  overflow-wrap: anywhere;
+}
+
+.status-message,
+.error-message {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.status-message {
+  color: #234580;
+  background: #edf4ff;
+}
+
+.error-message {
+  color: #a02a2a;
+  background: #fff0f0;
+  border: 1px solid #f4c3c3;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.summary-card {
+  padding: 20px;
+  border: 1px solid #dfe6f2;
+  border-radius: 16px;
+  background: #fbfcff;
+}
+
+.summary-card span {
+  display: block;
+  color: #727e95;
+  font-size: 14px;
+}
+
+.summary-card strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 30px;
+}
+
+.preview-section,
+.warning-section {
+  margin-top: 32px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.section-heading h2,
+.warning-section h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.section-heading p {
+  margin: 6px 0 0;
+  color: #748096;
+}
+
+.download-button {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  background: #3164d8;
+  box-shadow: 0 8px 20px rgba(49, 100, 216, 0.22);
+}
+
+.download-button:hover {
+  background: #2757c2;
+}
+
+.table-wrapper {
+  margin-top: 16px;
+  overflow: auto;
+  border: 1px solid #dfe6f2;
+  border-radius: 14px;
+}
+
+table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  background: white;
+}
+
+th,
+td {
+  padding: 13px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e7ecf4;
+}
+
+th {
+  color: #58667e;
+  font-size: 13px;
+  background: #f7f9fd;
+}
+
+td {
+  font-size: 14px;
+}
+
+.warning-section {
+  padding: 20px;
+  border: 1px solid #f1d89c;
+  border-radius: 16px;
+  background: #fffaf0;
+}
+
+.warning-section ul {
+  margin: 14px 0 0;
+  padding-left: 22px;
+}
+
+.warning-section li {
+  margin: 7px 0;
+  color: #725a1d;
+}
+
+@media (max-width: 760px) {
+  .page-shell {
+    padding: 20px 12px;
+  }
+
+  .converter-card {
+    padding: 22px 16px;
+    border-radius: 18px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .download-button {
+    width: 100%;
+  }
+}
