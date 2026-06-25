@@ -1,15 +1,14 @@
 import { useMemo, useState } from "react";
 import Papa from "papaparse";
-import * as XLSX from "xlsx";
 
 import {
-  GOODS_TEMP_COLUMNS,
   convertRow,
   isRepeatedHeader,
   validateRow,
   type GoodsTempRow,
   type SourceRow,
 } from "./conversion/convert";
+import { fillGoodsTempTemplate } from "./conversion/workbookTemplate";
 
 import "./App.css";
 
@@ -127,48 +126,23 @@ function App() {
       }
 
       const templateBuffer = await templateResponse.arrayBuffer();
-      const workbook = XLSX.read(templateBuffer, {
-        type: "array",
-        cellDates: true,
-      });
-
-      const firstSheetName = workbook.SheetNames[0];
-
-      if (!firstSheetName) {
-        throw new Error("GoodsTemp 模板中没有工作表。");
-      }
-
-      const worksheetData: Array<Array<string | number>> = [
-        [...GOODS_TEMP_COLUMNS],
-        ...result.rows.map((row) =>
-          GOODS_TEMP_COLUMNS.map((column) => row[column]),
-        ),
-      ];
-
-      const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-
-      // 设置常用列宽
-      worksheet["!cols"] = GOODS_TEMP_COLUMNS.map((column) => {
-        if (
-          column === "goodsName" ||
-          column === "goodsAlias" ||
-          column === "remark"
-        ) {
-          return { wch: 28 };
-        }
-
-        if (column === "promotionStartDate" || column === "promotionEndDate") {
-          return { wch: 18 };
-        }
-
-        return { wch: 16 };
-      });
-
-      workbook.Sheets[firstSheetName] = worksheet;
+      const workbookBytes = fillGoodsTempTemplate(templateBuffer, result.rows);
+      const workbookBuffer = new ArrayBuffer(workbookBytes.byteLength);
+      new Uint8Array(workbookBuffer).set(workbookBytes);
 
       const sourceBaseName = fileName.replace(/\.csv$/i, "") || "GoodsTemp";
+      const workbookBlob = new Blob([workbookBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const downloadUrl = URL.createObjectURL(workbookBlob);
+      const downloadLink = document.createElement("a");
 
-      XLSX.writeFile(workbook, `${sourceBaseName}_GoodsTemp.xlsx`);
+      downloadLink.href = downloadUrl;
+      downloadLink.download = `${sourceBaseName}_GoodsTemp.xlsx`;
+      document.body.append(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
     } catch (error) {
       const message = error instanceof Error ? error.message : "未知错误";
 
