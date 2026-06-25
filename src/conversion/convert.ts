@@ -51,6 +51,42 @@ function parseNumber(value: unknown): number | "" {
   return Number.isFinite(number) ? number : "";
 }
 
+function formatDate(value: unknown): string {
+  const text = cleanText(value);
+
+  if (!text) {
+    return "";
+  }
+
+  const yearFirstMatch = text.match(/^(\d{4})[-/.年](\d{1,2})[-/.月](\d{1,2})日?$/);
+
+  if (yearFirstMatch) {
+    const [, year, month, day] = yearFirstMatch;
+
+    return `${year}/${month.padStart(2, "0")}/${day.padStart(2, "0")}`;
+  }
+
+  const compactMatch = text.match(/^(\d{4})(\d{2})(\d{2})$/);
+
+  if (compactMatch) {
+    const [, year, month, day] = compactMatch;
+
+    return `${year}/${month}/${day}`;
+  }
+
+  const parsedDate = new Date(text);
+
+  if (!Number.isNaN(parsedDate.getTime())) {
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(parsedDate.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
+  }
+
+  return text;
+}
+
 function convertStatus(value: unknown): string {
   const status = cleanText(value).toUpperCase();
 
@@ -121,8 +157,8 @@ export function convertRow(row: SourceRow): GoodsTempRow {
     retailPrice: parseNumber(row.RetailPrice),
     promotionPrice: parseNumber(row.PromotionPrice),
 
-    promotionStartDate: cleanText(row.ValidFromDate),
-    promotionEndDate: cleanText(row.ValidToDate),
+    promotionStartDate: formatDate(row.ValidFromDate),
+    promotionEndDate: formatDate(row.ValidToDate),
 
     spec: buildSpecification(row),
     category: cleanText(row.Department),
